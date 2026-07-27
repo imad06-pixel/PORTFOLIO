@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IMAD — Sales Development Representative</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #ffffff;
+    --surface: #f3f9fb;
+    --surface-2: #e8f2f6;
+    --line: #d3e6ec;
+    --text: #08171e;
+    --muted: #35505c;
+    --navy: #042b44;
+    --teal: #096b90;
+    --sky: #71b7d5;
+    --ice: #a1ccdc;
+    --ice-soft: rgba(161,204,220,0.28);
+    --teal-soft: rgba(9,107,144,0.10);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{ height:100%; }
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 12% -10%, rgba(113,183,213,0.22), transparent 60%),
+      radial-gradient(ellipse 800px 500px at 100% 0%, rgba(161,204,220,0.28), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+  }
+
+  .wrap{ max-width:760px; margin:0 auto; padding:60px 24px 90px; }
+
+  /* ============ HERO — visible publiquement ============ */
+  .hero{ text-align:center; margin-bottom:44px; }
+  .hero .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.16em;
+    color:#075873; text-transform:uppercase; margin-bottom:14px; font-weight:700;
+  }
+  .hero h1{
+    font-family:'Bebas Neue', sans-serif; font-size:clamp(50px,10vw,76px);
+    letter-spacing:.01em; line-height:0.95;
+    color:var(--navy);
+    text-shadow:0 2px 10px rgba(4,43,68,0.12);
+  }
+  .hero .role{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:16px;
+    color:#075873; margin-top:12px;
+  }
+  .hero .pitch{
+    max-width:540px; margin:20px auto 0; color:#1e3540; font-size:14.5px; line-height:1.7; font-weight:500;
+  }
+  .hero .pitch-sub{
+    margin-top:8px; color:#075873; font-weight:600;
+  }
+
+  .flags-row{
+    display:flex; justify-content:center; gap:10px; margin-top:26px; flex-wrap:wrap;
+  }
+  .flag-pill{
+    display:flex; align-items:center; gap:7px;
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:999px; padding:7px 14px; font-size:12.5px; color:var(--muted); font-weight:600;
+    box-shadow:0 3px 10px -5px rgba(4,43,68,0.15);
+  }
+  .flag-pill .emoji{ width:20px; height:15px; border-radius:2px; object-fit:cover; box-shadow:0 0 0 1px rgba(4,43,68,0.1); }
+
+  /* ============ ZONE VERROUILLÉE ============ */
+  .locked-zone{
+    position:relative;
+    border-radius:24px;
+    overflow:hidden;
+  }
+  #privateContent{
+    filter:blur(16px) saturate(0.85);
+    transform:scale(1.02);
+    pointer-events:none;
+    user-select:none;
+    transition:filter .6s ease, transform .6s ease;
+    padding-top:8px;
+  }
+  #privateContent.unlocked{
+    filter:blur(0) saturate(1);
+    transform:scale(1);
+    pointer-events:auto;
+    user-select:auto;
+  }
+
+  #gate{
+    position:absolute; inset:0; z-index:10;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    background:rgba(255,255,255,0.55);
+    backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);
+    transition:opacity .5s ease;
+    border-radius:24px;
+  }
+  #gate.hidden{ opacity:0; pointer-events:none; }
+
+  .gate-card{
+    max-width:380px; width:100%;
+    text-align:center;
+    background:rgba(255,255,255,0.9);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:34px 26px;
+    box-shadow:0 30px 70px -15px rgba(4,43,68,0.55), 0 10px 25px -10px rgba(4,43,68,0.4);
+  }
+  .lock{
+    width:52px; height:52px; margin:0 auto 18px;
+    border-radius:50%;
+    background:linear-gradient(160deg, var(--ice-soft), var(--teal-soft));
+    border:1px solid var(--ice);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .lock svg{ width:20px; height:20px; }
+  .gate-eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.16em;
+    color:#075873; text-transform:uppercase; margin-bottom:8px; font-weight:700;
+  }
+  .gate-title{
+    font-family:'Bebas Neue', sans-serif; font-size:32px; letter-spacing:.02em;
+    line-height:1; margin-bottom:12px;
+    color:var(--navy);
+    text-shadow:0 2px 10px rgba(4,43,68,0.12);
+  }
+  .gate-sub{
+    color:var(--muted); font-size:13.5px; line-height:1.6; margin-bottom:22px; font-weight:500;
+  }
+  .gate-sub b{ color:var(--navy); font-weight:700; }
+  .dm-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    background:linear-gradient(90deg, var(--teal), var(--sky));
+    border:none;
+    color:#ffffff; text-decoration:none;
+    padding:11px 20px; border-radius:999px; font-size:13px; font-weight:700;
+    margin-bottom:24px;
+    transition:transform .15s, filter .15s;
+    box-shadow:0 10px 24px -10px rgba(9,107,144,0.5);
+  }
+  .dm-btn:hover{ filter:brightness(1.05); transform:translateY(-1px); }
+  .divider{
+    display:flex; align-items:center; gap:12px; color:var(--muted);
+    font-size:10.5px; text-transform:uppercase; letter-spacing:.1em;
+    margin-bottom:20px;
+  }
+  .divider:before, .divider:after{ content:''; flex:1; height:1px; background:var(--line); }
+
+  .pw-form{ display:flex; flex-direction:column; gap:10px; }
+  .pw-form input{
+    width:100%;
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--text);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14.5px;
+    text-align:center;
+    letter-spacing:.05em;
+    outline:none;
+    font-family:'Inter', sans-serif;
+    box-shadow:inset 0 1px 3px rgba(4,43,68,0.08);
+  }
+  .pw-form input:focus{ border-color:var(--teal); }
+  .pw-form button{
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    color:var(--navy);
+    border-radius:10px;
+    padding:12px 14px;
+    font-weight:700;
+    font-size:13.5px;
+    cursor:pointer;
+    letter-spacing:.02em;
+    transition:border-color .15s, color .15s;
+  }
+  .pw-form button:hover{ border-color:var(--teal); color:var(--teal); }
+  .pw-error{
+    color:#d64b63; font-size:12px; margin-top:2px; min-height:16px;
+  }
+  .shake{ animation:shake .35s; }
+  @keyframes shake{
+    0%,100%{ transform:translateX(0); }
+    25%{ transform:translateX(-6px); }
+    75%{ transform:translateX(6px); }
+  }
+
+  /* ============ CONTENU PRIVÉ ============ */
+  .section{ margin-bottom:56px; }
+  .section-head{ margin-bottom:8px; }
+  .section-head .tag{ display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+  .section-head .dot{ width:6px; height:6px; border-radius:50%; background:var(--teal); }
+  .section-head h2{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:13px;
+    text-transform:uppercase; letter-spacing:.1em; color:var(--muted);
+  }
+  .section-head .tagline{
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:19px;
+    color:var(--navy); margin:6px 0 22px;
+  }
+  .section-head .tagline span{ color:var(--teal); }
+
+  .skills-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  .skill-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px;
+    padding:18px; transition:border-color .15s, transform .15s, box-shadow .15s;
+    box-shadow:0 4px 14px -6px rgba(4,43,68,0.12);
+  }
+  .skill-card:hover{ border-color:var(--teal); transform:translateY(-2px); box-shadow:0 10px 22px -8px rgba(9,107,144,0.25); }
+  .skill-card .name{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:15px; margin-bottom:6px; color:var(--teal); }
+  .skill-card .desc{ font-size:12.5px; color:#25404c; line-height:1.55; font-weight:500; }
+
+  .stats-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .stat-card{
+    background:linear-gradient(160deg, var(--ice-soft), rgba(161,204,220,0.03));
+    border:1px solid var(--ice);
+    border-radius:14px; padding:20px 16px; text-align:center;
+    box-shadow:0 4px 14px -6px rgba(4,43,68,0.10);
+  }
+  .stat-card .num{
+    font-family:'JetBrains Mono', monospace; font-weight:700; font-size:26px; color:var(--teal);
+  }
+  .stat-card .label{ font-size:11px; color:var(--muted); margin-top:6px; text-transform:uppercase; letter-spacing:.04em; }
+  .todo{
+    font-size:10.5px; color:#8298a2; font-style:italic; margin-top:4px;
+  }
+
+  .contact{
+    text-align:center; border-top:1px solid var(--line); padding-top:40px;
+  }
+  .contact h2{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:20px; margin-bottom:10px;
+    color:var(--navy);
+  }
+  .contact p{ color:var(--muted); font-size:13.5px; margin-bottom:20px; }
+  .contact .dm-btn{ margin-bottom:0; }
+
+  @media (max-width:560px){
+    .skills-grid, .stats-grid{ grid-template-columns:1fr 1fr; }
+  }
+
+  .timeline{ display:flex; flex-direction:column; gap:0; }
+  .timeline-item{
+    display:flex; gap:16px; padding-bottom:26px; position:relative;
+  }
+  .timeline-item:last-child{ padding-bottom:0; }
+  .timeline-item:not(:last-child):before{
+    content:''; position:absolute; left:5px; top:16px; bottom:0;
+    width:1px; background:var(--line);
+  }
+  .timeline-dot{
+    width:11px; height:11px; border-radius:50%;
+    background:var(--teal); border:2px solid #ffffff;
+    box-shadow:0 0 0 1px var(--ice);
+    margin-top:4px; flex-shrink:0;
+  }
+  .timeline-content{ flex:1; }
+  .timeline-title{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:15px; color:var(--navy); }
+  .timeline-meta{
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--teal);
+    margin:3px 0 6px; text-transform:uppercase; letter-spacing:.03em;
+  }
+  .timeline-desc{ font-size:12.5px; color:#25404c; line-height:1.55; font-weight:500; }
+
+.exp-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .exp-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px;
+    padding:20px 14px; text-align:center;
+    box-shadow:0 4px 14px -6px rgba(4,43,68,0.12);
+    transition:border-color .15s, transform .15s, box-shadow .15s;
+  }
+  .exp-card:hover{ border-color:var(--teal); transform:translateY(-2px); box-shadow:0 10px 22px -8px rgba(9,107,144,0.25); }
+  .exp-flag{
+    width:52px; height:52px; border-radius:50%; object-fit:cover;
+    margin:0 auto 12px; box-shadow:0 0 0 3px #ffffff, 0 0 0 4px var(--line);
+  }
+  .exp-country{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:13.5px; color:var(--navy); margin-bottom:10px; }
+  .exp-niches{ display:flex; flex-direction:column; gap:6px; align-items:center; }
+  .niche-tag{
+    font-size:11px; font-weight:600; color:var(--teal);
+    background:var(--ice-soft); border:1px solid var(--ice);
+    border-radius:999px; padding:4px 12px;
+  }
+
+  @media (max-width:640px){
+    .exp-grid{ grid-template-columns:repeat(2,1fr); }
+  }
+
+  .testimonials-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .testimonial-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px;
+    padding:20px; box-shadow:0 4px 14px -6px rgba(4,43,68,0.12);
+  }
+  .quote{
+    font-size:13px; color:#1e3540; line-height:1.6; font-style:italic; margin-bottom:12px;
+  }
+  .quote-author{
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:12px; color:var(--teal);
+  }
+
+  @media (max-width:560px){
+    .testimonials-grid{ grid-template-columns:1fr; }
+  }
+
+  .lang-switch{
+    position:fixed; top:18px; right:18px; z-index:100;
+    display:flex; background:rgba(255,255,255,0.9); border:1px solid var(--line);
+    border-radius:999px; padding:4px; gap:2px;
+    box-shadow:0 6px 18px -8px rgba(4,43,68,0.3);
+  }
+  .lang-btn{
+    border:none; background:transparent; cursor:pointer;
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:11.5px;
+    color:var(--muted); padding:6px 12px; border-radius:999px;
+    letter-spacing:.03em; transition:background .15s, color .15s;
+  }
+  .lang-btn.active{ background:var(--teal); color:#ffffff; }
+</style>
+</head>
+<body>
+<div class="lang-switch">
+  <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">EN</button>
+  <button class="lang-btn" data-lang="fr" onclick="setLanguage('fr')">FR</button>
+</div>
+<div class="wrap">
+
+  <!-- ============ INFO PUBLIQUE ============ -->
+  <div class="hero">
+    <div class="eyebrow" data-i18n="eyebrow">Portfolio</div>
+    <h1>IMAD</h1>
+    <div class="role" data-i18n="role">Sales Development Representative (SDR)</div>
+    <p class="pitch" data-i18n="pitch1">
+      Sales Development Representative turning inbound and outbound leads into
+      qualified sales opportunities.
+    </p>
+    <p class="pitch pitch-sub" data-i18n="pitch2">
+      Trilingual — French, English, Arabic — built to work across borders.
+    </p>
+    <div class="flags-row">
+      <div class="flag-pill"><img class="emoji" src="https://flagcdn.com/40x30/ch.png" alt="CH"><span data-i18n="flagCH">Switzerland</span></div>
+      <div class="flag-pill"><img class="emoji" src="https://flagcdn.com/40x30/fr.png" alt="FR"><span data-i18n="flagFR">France</span></div>
+      <div class="flag-pill"><img class="emoji" src="https://flagcdn.com/40x30/us.png" alt="US"><span data-i18n="flagUS">United States</span></div>
+      <div class="flag-pill"><img class="emoji" src="https://flagcdn.com/40x30/ae.png" alt="AE"><span data-i18n="flagAE">UAE</span></div>
+      <div class="flag-pill"><img class="emoji" src="https://flagcdn.com/40x30/dz.png" alt="DZ"><span data-i18n="flagDZ">Algeria</span></div>
+    </div>
+  </div>
+
+  <!-- ============ ZONE VERROUILLÉE ============ -->
+  <div class="locked-zone">
+
+    <div id="privateContent">
+      <div class="section">
+        <div class="section-head">
+          <div class="tag"><span class="dot"></span><h2 data-i18n="skillsHead">Skills</h2></div>
+          <div class="tagline" data-i18n-html="tagline">Turning <span>leads</span> into paying customers.</div>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-card">
+            <div class="name" data-i18n="skill1Name">Prospecting</div>
+            <div class="desc" data-i18n="skill1Desc">Identifying and qualifying high-potential leads across different markets.</div>
+          </div>
+          <div class="skill-card">
+            <div class="name" data-i18n="skill2Name">Appointment Setting</div>
+            <div class="desc" data-i18n="skill2Desc">Converting leads into qualified, sales-ready appointments.</div>
+          </div>
+          <div class="skill-card">
+            <div class="name" data-i18n="skill3Name">Client Follow-up</div>
+            <div class="desc" data-i18n="skill3Desc">Following up and nurturing leads to maximize every sales opportunity.</div>
+          </div>
+          <div class="skill-card">
+            <div class="name" data-i18n="skill5Name">Social Media Growth</div>
+            <div class="desc" data-i18n="skill5Desc">Building online presence and engagement on TikTok and Instagram.</div>
+          </div>
+          <div class="skill-card">
+            <div class="name" data-i18n="skill6Name">Client Messaging</div>
+            <div class="desc" data-i18n="skill6Desc">Managing WhatsApp, DMs, and messages to keep response times fast.</div>
+          </div>
+          <div class="skill-card">
+            <div class="name" data-i18n="skill4Name">Closing (secondary)</div>
+            <div class="desc" data-i18n="skill4Desc">Supporting the final decision and closing the sale when needed.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><div class="tag"><span class="dot"></span><h2 data-i18n="experienceHead">Experience</h2></div></div>
+        <div class="exp-grid">
+          <div class="exp-card">
+            <img class="exp-flag" src="https://flagcdn.com/80x80/ch.png" alt="CH">
+            <div class="exp-country" data-i18n="flagCH">Switzerland</div>
+            <div class="exp-niches">
+              <span class="niche-tag" data-i18n="nicheCH1">[Niche 1]</span>
+              <span class="niche-tag" data-i18n="nicheCH2">[Niche 2]</span>
+            </div>
+          </div>
+          <div class="exp-card">
+            <img class="exp-flag" src="https://flagcdn.com/80x80/fr.png" alt="FR">
+            <div class="exp-country" data-i18n="flagFR">France</div>
+            <div class="exp-niches">
+              <span class="niche-tag" data-i18n="nicheFR1">[Niche 1]</span>
+              <span class="niche-tag" data-i18n="nicheFR2">[Niche 2]</span>
+            </div>
+          </div>
+          <div class="exp-card">
+            <img class="exp-flag" src="https://flagcdn.com/80x80/us.png" alt="US">
+            <div class="exp-country" data-i18n="flagUS">United States</div>
+            <div class="exp-niches">
+              <span class="niche-tag" data-i18n="nicheUS1">[Niche 1]</span>
+              <span class="niche-tag" data-i18n="nicheUS2">[Niche 2]</span>
+            </div>
+          </div>
+          <div class="exp-card">
+            <img class="exp-flag" src="https://flagcdn.com/80x80/ae.png" alt="AE">
+            <div class="exp-country" data-i18n="flagAE">UAE</div>
+            <div class="exp-niches">
+              <span class="niche-tag" data-i18n="nicheAE1">[Niche]</span>
+            </div>
+          </div>
+          <div class="exp-card">
+            <img class="exp-flag" src="https://flagcdn.com/80x80/dz.png" alt="DZ">
+            <div class="exp-country" data-i18n="flagDZ">Algeria</div>
+            <div class="exp-niches">
+              <span class="niche-tag" data-i18n="nicheDZ1">[Niche]</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><div class="tag"><span class="dot"></span><h2 data-i18n="resultsHead">Key Results</h2></div></div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="num">190+</div>
+            <div class="label" data-i18n="stat1Label">Appointments Booked</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">6%</div>
+            <div class="label" data-i18n="stat2Label">Conversion Rate</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">250K€+</div>
+            <div class="label" data-i18n="stat3Label">Revenue Generated</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><div class="tag"><span class="dot"></span><h2 data-i18n="testimonialsHead">Testimonials</h2></div></div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="quote" data-i18n="quote1">"[Client testimonial to be filled in]"</div>
+            <div class="quote-author" data-i18n="author1">— [Name, Role]</div>
+          </div>
+          <div class="testimonial-card">
+            <div class="quote" data-i18n="quote2">"[Client testimonial to be filled in]"</div>
+            <div class="quote-author" data-i18n="author2">— [Name, Role]</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact">
+        <h2 data-i18n="contactHead">Let's work together?</h2>
+        <p data-i18n="contactSub">Message me — I reply quickly.</p>
+        <a href="https://instagram.com/YOUR_HANDLE" target="_blank" class="dm-btn">
+          <span data-i18n="sendMsg">Send a message →</span>
+        </a>
+      </div>
+    </div>
+
+    <div id="gate">
+      <div class="gate-card">
+        <div class="lock">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#096b90" stroke-width="1.6">
+            <rect x="4" y="10" width="16" height="10" rx="2"/>
+            <path d="M7 10V7a5 5 0 0 1 10 0v3"/>
+          </svg>
+        </div>
+        <div class="gate-eyebrow" data-i18n="gateEyebrow">Private content</div>
+        <div class="gate-title" data-i18n="gateTitle">Restricted access</div>
+        <div class="gate-sub" data-i18n-html="gateSub">
+          Skills and detailed results.<br>
+          Send me a message to get the <b>password</b>.
+        </div>
+
+        <a href="https://instagram.com/YOUR_HANDLE" target="_blank" class="dm-btn">
+          <span data-i18n="sendMsg">Send a message →</span>
+        </a>
+
+        <div class="divider" data-i18n="divider">Already have the password</div>
+
+        <form class="pw-form" id="pwForm">
+          <input type="password" id="pwInput" data-i18n-placeholder="pwPlaceholder" placeholder="Password" autocomplete="off">
+          <button type="submit" data-i18n="unlockBtn">Unlock</button>
+          <div class="pw-error" id="pwError"></div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  // Change the password here:
+  const PASSWORD = "SETTER2026";
+
+  const form = document.getElementById('pwForm');
+  const input = document.getElementById('pwInput');
+  const error = document.getElementById('pwError');
+  const gate = document.getElementById('gate');
+  const privateContent = document.getElementById('privateContent');
+  const card = document.querySelector('.gate-card');
+
+  const translations = {
+    en: {
+      eyebrow: "Portfolio",
+      role: "Sales Development Representative (SDR)",
+      pitch1: "Sales Development Representative turning inbound and outbound leads into qualified sales opportunities.",
+      pitch2: "Trilingual — French, English, Arabic — built to work across borders.",
+      flagCH: "Switzerland",
+      flagFR: "France",
+      flagUS: "United States",
+      flagAE: "UAE",
+      flagDZ: "Algeria",
+      skillsHead: "Skills",
+      tagline: 'Turning <span>leads</span> into paying customers.',
+      skill1Name: "Prospecting",
+      skill1Desc: "Identifying and qualifying high-potential leads across different markets.",
+      skill2Name: "Appointment Setting",
+      skill2Desc: "Converting leads into qualified, sales-ready appointments.",
+      skill3Name: "Client Follow-up",
+      skill3Desc: "Following up and nurturing leads to maximize every sales opportunity.",
+      skill4Name: "Closing (secondary)",
+      skill4Desc: "Supporting the final decision and closing the sale when needed.",
+      skill5Name: "Social Media Growth",
+      skill5Desc: "Building online presence and engagement on TikTok and Instagram.",
+      skill6Name: "Client Messaging",
+      skill6Desc: "Managing WhatsApp, DMs, and messages to keep response times fast.",
+      experienceHead: "Experience",
+      nicheCH1: "[Niche 1]",
+      nicheCH2: "[Niche 2]",
+      nicheFR1: "[Niche 1]",
+      nicheFR2: "[Niche 2]",
+      nicheUS1: "[Niche 1]",
+      nicheUS2: "[Niche 2]",
+      nicheAE1: "[Niche]",
+      nicheDZ1: "[Niche]",
+      resultsHead: "Key Results",
+      stat1Label: "Appointments Booked",
+      stat2Label: "Conversion Rate",
+      stat3Label: "Revenue Generated",
+      todo: "to be filled in",
+      testimonialsHead: "Testimonials",
+      quote1: '"[Client testimonial to be filled in]"',
+      author1: "— [Name, Role]",
+      quote2: '"[Client testimonial to be filled in]"',
+      author2: "— [Name, Role]",
+      contactHead: "Let's work together?",
+      contactSub: "Message me — I reply quickly.",
+      sendMsg: "Send a message →",
+      gateEyebrow: "Private content",
+      gateTitle: "Restricted access",
+      gateSub: 'Skills and detailed results.<br>Send me a message to get the <b>password</b>.',
+      divider: "Already have the password",
+      pwPlaceholder: "Password",
+      unlockBtn: "Unlock",
+      wrongPassword: "Incorrect password."
+    },
+    fr: {
+      eyebrow: "Portfolio",
+      role: "Sales Development Representative (SDR)",
+      pitch1: "Sales Development Representative qui transforme les leads entrants et sortants en opportunités de vente qualifiées.",
+      pitch2: "Trilingue — français, anglais, arabe — pensé pour travailler à l'international.",
+      flagCH: "Suisse",
+      flagFR: "France",
+      flagUS: "États-Unis",
+      flagAE: "Émirats Arabes Unis",
+      flagDZ: "Algérie",
+      skillsHead: "Compétences",
+      tagline: 'Transformer les <span>leads</span> en clients payants.',
+      skill1Name: "Prospection",
+      skill1Desc: "Identifier et qualifier les leads à fort potentiel, sur différents marchés.",
+      skill2Name: "Prise de rendez-vous",
+      skill2Desc: "Convertir les leads en rendez-vous qualifiés, prêts à passer à l'achat.",
+      skill3Name: "Suivi client",
+      skill3Desc: "Relancer et fidéliser pour maximiser chaque opportunité commerciale.",
+      skill4Name: "Closing (en complément)",
+      skill4Desc: "Accompagner la décision finale et conclure la vente si besoin.",
+      skill5Name: "Croissance des réseaux sociaux",
+      skill5Desc: "Développer la présence en ligne et l'engagement sur TikTok et Instagram.",
+      skill6Name: "Gestion des messages",
+      skill6Desc: "Gérer WhatsApp, DM et messages pour garder un temps de réponse rapide.",
+      experienceHead: "Expériences",
+      nicheCH1: "[Niche 1]",
+      nicheCH2: "[Niche 2]",
+      nicheFR1: "[Niche 1]",
+      nicheFR2: "[Niche 2]",
+      nicheUS1: "[Niche 1]",
+      nicheUS2: "[Niche 2]",
+      nicheAE1: "[Niche]",
+      nicheDZ1: "[Niche]",
+      resultsHead: "Résultats chiffrés",
+      stat1Label: "RDV pris",
+      stat2Label: "Taux de conversion",
+      stat3Label: "CA généré",
+      todo: "à remplir",
+      testimonialsHead: "Témoignages",
+      quote1: '"[Témoignage client à remplir]"',
+      author1: "— [Nom, rôle]",
+      quote2: '"[Témoignage client à remplir]"',
+      author2: "— [Nom, rôle]",
+      contactHead: "On travaille ensemble ?",
+      contactSub: "Écris-moi, je réponds rapidement.",
+      sendMsg: "Envoyer un message →",
+      gateEyebrow: "Contenu privé",
+      gateTitle: "Accès réservé",
+      gateSub: 'Compétences et résultats détaillés.<br>Envoie-moi un message pour recevoir le <b>mot de passe</b>.',
+      divider: "Tu as déjà le mot de passe",
+      pwPlaceholder: "Mot de passe",
+      unlockBtn: "Débloquer",
+      wrongPassword: "Mot de passe incorrect."
+    }
+  };
+
+  let currentLang = 'en';
+
+  function setLanguage(lang){
+    currentLang = lang;
+    const dict = translations[lang];
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      const key = el.getAttribute('data-i18n');
+      if(dict[key] !== undefined) el.textContent = dict[key];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+      const key = el.getAttribute('data-i18n-html');
+      if(dict[key] !== undefined) el.innerHTML = dict[key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){
+      const key = el.getAttribute('data-i18n-placeholder');
+      if(dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
+    });
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(input.value.trim().toLowerCase() === PASSWORD.toLowerCase()){
+      privateContent.classList.add('unlocked');
+      gate.classList.add('hidden');
+      setTimeout(function(){ gate.style.display = 'none'; }, 500);
+    }else{
+      error.textContent = translations[currentLang].wrongPassword;
+      card.classList.remove('shake');
+      void card.offsetWidth;
+      card.classList.add('shake');
+    }
+  });
+
+  setLanguage('en');
+</script>
+</body>
+</html>
