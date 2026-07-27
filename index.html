@@ -58,16 +58,37 @@
     margin-top:8px; color:#075873; font-weight:600;
   }
 
-  .flags-row{
-    display:flex; justify-content:center; gap:10px; margin-top:26px; flex-wrap:wrap;
+  .flags-marquee{
+    margin-top:10px; overflow:hidden; width:100%;
+    -webkit-mask-image:linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    mask-image:linear-gradient(to right, transparent, black 12%, black 88%, transparent);
   }
-  .flag-pill{
-    display:flex; align-items:center; gap:7px;
+  .flags-track{
+    display:flex; align-items:center; gap:18px; width:max-content;
+    animation:flagsScroll 14s linear infinite;
+  }
+  .flags-track img{
+    width:26px; height:26px; border-radius:50%; object-fit:cover;
+    box-shadow:0 0 0 2px #ffffff, 0 0 0 3px var(--line);
+    flex-shrink:0;
+  }
+  .flags-caption{
+    font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--muted); font-weight:700; margin-top:28px;
+  }
+  .flag-item{
+    display:flex; align-items:center; gap:8px; white-space:nowrap;
+    font-size:12.5px; font-weight:600; color:var(--navy);
     background:var(--surface); border:1px solid var(--line);
-    border-radius:999px; padding:7px 14px; font-size:12.5px; color:var(--muted); font-weight:600;
+    border-radius:999px; padding:7px 14px 7px 16px;
     box-shadow:0 3px 10px -5px rgba(4,43,68,0.15);
   }
-  .flag-pill .emoji{ width:20px; height:15px; border-radius:2px; object-fit:cover; box-shadow:0 0 0 1px rgba(4,43,68,0.1); }
+  @keyframes flagsScroll{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(-50%); }
+  }
+  .flags-marquee.small .flags-track img{ width:24px; height:24px; }
+  .flags-marquee.small{ max-width:340px; margin:0 auto 36px; }
 
   /* ============ ZONE VERROUILLÉE ============ */
   .locked-zone{
@@ -92,8 +113,8 @@
 
   #gate{
     position:absolute; inset:0; z-index:10;
-    display:flex; align-items:center; justify-content:center;
-    padding:24px;
+    display:flex; align-items:flex-start; justify-content:center;
+    padding:60px 24px 24px;
     background:rgba(255,255,255,0.55);
     backdrop-filter:blur(3px);
     -webkit-backdrop-filter:blur(3px);
@@ -321,6 +342,12 @@
   }
   .lang-btn.active{ background:var(--teal); color:#ffffff; }
 </style>
+<!-- Analytics — free, privacy-friendly, no cookie banner needed.
+     1) Create a free account at https://www.goatcounter.com
+     2) Replace YOUR-CODE below with the code they give you (e.g. "imad-portfolio")
+     3) View your stats anytime at https://YOUR-CODE.goatcounter.com -->
+<script data-goatcounter="https://YOUR-CODE.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 <div class="lang-switch">
@@ -333,20 +360,28 @@
   <div class="hero">
     <div class="eyebrow" data-i18n="eyebrow">Portfolio</div>
     <h1>IMAD</h1>
-    <div class="role" data-i18n="role">Sales Development Representative (SDR)</div>
+    <div class="role" data-i18n="role">Sales Growth Lead (Setter &amp; Closer)</div>
     <p class="pitch" data-i18n="pitch1">
-      Sales Development Representative turning inbound and outbound leads into
+      Sales Growth Lead turning inbound and outbound leads into
       qualified sales opportunities.
     </p>
     <p class="pitch pitch-sub" data-i18n="pitch2">
       Trilingual — French, English, Arabic — built to work across borders.
     </p>
-    <div class="flags-row">
-      <div class="flag-pill"><img class="emoji" src="https://flagcdn.com/40x30/ch.png" alt="CH"><span data-i18n="flagCH">Switzerland</span></div>
-      <div class="flag-pill"><img class="emoji" src="https://flagcdn.com/40x30/fr.png" alt="FR"><span data-i18n="flagFR">France</span></div>
-      <div class="flag-pill"><img class="emoji" src="https://flagcdn.com/40x30/us.png" alt="US"><span data-i18n="flagUS">United States</span></div>
-      <div class="flag-pill"><img class="emoji" src="https://flagcdn.com/40x30/ae.png" alt="AE"><span data-i18n="flagAE">UAE</span></div>
-      <div class="flag-pill"><img class="emoji" src="https://flagcdn.com/40x30/dz.png" alt="DZ"><span data-i18n="flagDZ">Algeria</span></div>
+    <div class="flags-caption" data-i18n="flagsCaption">Trusted by clients from</div>
+    <div class="flags-marquee">
+      <div class="flags-track">
+        <div class="flag-item"><span data-i18n="flagCH">Switzerland</span><img src="https://flagcdn.com/w80/ch.png" alt="CH"></div>
+        <div class="flag-item"><span data-i18n="flagFR">France</span><img src="https://flagcdn.com/w80/fr.png" alt="FR"></div>
+        <div class="flag-item"><span data-i18n="flagUS">United States</span><img src="https://flagcdn.com/w80/us.png" alt="US"></div>
+        <div class="flag-item"><span data-i18n="flagAE">UAE</span><img src="https://flagcdn.com/w80/ae.png" alt="AE" style="object-position:left center;"></div>
+        <div class="flag-item"><span data-i18n="flagDZ">Algeria</span><img src="https://flagcdn.com/w80/dz.png" alt="DZ"></div>
+        <div class="flag-item"><span data-i18n="flagCH">Switzerland</span><img src="https://flagcdn.com/w80/ch.png" alt="CH"></div>
+        <div class="flag-item"><span data-i18n="flagFR">France</span><img src="https://flagcdn.com/w80/fr.png" alt="FR"></div>
+        <div class="flag-item"><span data-i18n="flagUS">United States</span><img src="https://flagcdn.com/w80/us.png" alt="US"></div>
+        <div class="flag-item"><span data-i18n="flagAE">UAE</span><img src="https://flagcdn.com/w80/ae.png" alt="AE" style="object-position:left center;"></div>
+        <div class="flag-item"><span data-i18n="flagDZ">Algeria</span><img src="https://flagcdn.com/w80/dz.png" alt="DZ"></div>
+      </div>
     </div>
   </div>
 
@@ -388,50 +423,6 @@
       </div>
 
       <div class="section">
-        <div class="section-head"><div class="tag"><span class="dot"></span><h2 data-i18n="experienceHead">Experience</h2></div></div>
-        <div class="exp-grid">
-          <div class="exp-card">
-            <img class="exp-flag" src="https://flagcdn.com/80x80/ch.png" alt="CH">
-            <div class="exp-country" data-i18n="flagCH">Switzerland</div>
-            <div class="exp-niches">
-              <span class="niche-tag" data-i18n="nicheCH1">[Niche 1]</span>
-              <span class="niche-tag" data-i18n="nicheCH2">[Niche 2]</span>
-            </div>
-          </div>
-          <div class="exp-card">
-            <img class="exp-flag" src="https://flagcdn.com/80x80/fr.png" alt="FR">
-            <div class="exp-country" data-i18n="flagFR">France</div>
-            <div class="exp-niches">
-              <span class="niche-tag" data-i18n="nicheFR1">[Niche 1]</span>
-              <span class="niche-tag" data-i18n="nicheFR2">[Niche 2]</span>
-            </div>
-          </div>
-          <div class="exp-card">
-            <img class="exp-flag" src="https://flagcdn.com/80x80/us.png" alt="US">
-            <div class="exp-country" data-i18n="flagUS">United States</div>
-            <div class="exp-niches">
-              <span class="niche-tag" data-i18n="nicheUS1">[Niche 1]</span>
-              <span class="niche-tag" data-i18n="nicheUS2">[Niche 2]</span>
-            </div>
-          </div>
-          <div class="exp-card">
-            <img class="exp-flag" src="https://flagcdn.com/80x80/ae.png" alt="AE">
-            <div class="exp-country" data-i18n="flagAE">UAE</div>
-            <div class="exp-niches">
-              <span class="niche-tag" data-i18n="nicheAE1">[Niche]</span>
-            </div>
-          </div>
-          <div class="exp-card">
-            <img class="exp-flag" src="https://flagcdn.com/80x80/dz.png" alt="DZ">
-            <div class="exp-country" data-i18n="flagDZ">Algeria</div>
-            <div class="exp-niches">
-              <span class="niche-tag" data-i18n="nicheDZ1">[Niche]</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
         <div class="section-head"><div class="tag"><span class="dot"></span><h2 data-i18n="resultsHead">Key Results</h2></div></div>
         <div class="stats-grid">
           <div class="stat-card">
@@ -450,15 +441,44 @@
       </div>
 
       <div class="section">
-        <div class="section-head"><div class="tag"><span class="dot"></span><h2 data-i18n="testimonialsHead">Testimonials</h2></div></div>
-        <div class="testimonials-grid">
-          <div class="testimonial-card">
-            <div class="quote" data-i18n="quote1">"[Client testimonial to be filled in]"</div>
-            <div class="quote-author" data-i18n="author1">— [Name, Role]</div>
+        <div class="section-head"><div class="tag"><span class="dot"></span><h2 data-i18n="experienceHead">Experience</h2></div></div>
+        <div class="exp-grid">
+          <div class="exp-card">
+            <img class="exp-flag" src="https://flagcdn.com/w80/ch.png" alt="CH">
+            <div class="exp-country" data-i18n="flagCH">Switzerland</div>
+            <div class="exp-niches">
+              <span class="niche-tag" data-i18n="nicheCH1">Cross-border support</span>
+            </div>
           </div>
-          <div class="testimonial-card">
-            <div class="quote" data-i18n="quote2">"[Client testimonial to be filled in]"</div>
-            <div class="quote-author" data-i18n="author2">— [Name, Role]</div>
+          <div class="exp-card">
+            <img class="exp-flag" src="https://flagcdn.com/w80/fr.png" alt="FR">
+            <div class="exp-country" data-i18n="flagFR">France</div>
+            <div class="exp-niches">
+              <span class="niche-tag" data-i18n="nicheFR1">Sports coaching</span>
+              <span class="niche-tag" data-i18n="nicheFR2">E-commerce (China sourcing)</span>
+            </div>
+          </div>
+          <div class="exp-card">
+            <img class="exp-flag" src="https://flagcdn.com/w80/us.png" alt="US">
+            <div class="exp-country" data-i18n="flagUS">United States</div>
+            <div class="exp-niches">
+              <span class="niche-tag" data-i18n="nicheUS1">Real estate agency</span>
+              <span class="niche-tag" data-i18n="nicheUS2">Credit repair</span>
+            </div>
+          </div>
+          <div class="exp-card">
+            <img class="exp-flag" src="https://flagcdn.com/w80/ae.png" alt="AE" style="object-position:left center;">
+            <div class="exp-country" data-i18n="flagAE">UAE</div>
+            <div class="exp-niches">
+              <span class="niche-tag" data-i18n="nicheAE1">Real estate agency</span>
+            </div>
+          </div>
+          <div class="exp-card">
+            <img class="exp-flag" src="https://flagcdn.com/w80/dz.png" alt="DZ">
+            <div class="exp-country" data-i18n="flagDZ">Algeria</div>
+            <div class="exp-niches">
+              <span class="niche-tag" data-i18n="nicheDZ1">Sourcing agency (worldwide)</span>
+            </div>
           </div>
         </div>
       </div>
@@ -466,7 +486,7 @@
       <div class="contact">
         <h2 data-i18n="contactHead">Let's work together?</h2>
         <p data-i18n="contactSub">Message me — I reply quickly.</p>
-        <a href="https://instagram.com/YOUR_HANDLE" target="_blank" class="dm-btn">
+        <a href="https://instagram.com/imad_irl" target="_blank" class="dm-btn">
           <span data-i18n="sendMsg">Send a message →</span>
         </a>
       </div>
@@ -487,7 +507,7 @@
           Send me a message to get the <b>password</b>.
         </div>
 
-        <a href="https://instagram.com/IMAD_IRL" target="_blank" class="dm-btn">
+        <a href="https://instagram.com/imad_irl" target="_blank" class="dm-btn">
           <span data-i18n="sendMsg">Send a message →</span>
         </a>
 
@@ -507,7 +527,7 @@
 
 <script>
   // Change the password here:
-  const PASSWORD = "SETTER2026";
+  const PASSWORD = "SETTER01";
 
   const form = document.getElementById('pwForm');
   const input = document.getElementById('pwInput');
@@ -519,8 +539,9 @@
   const translations = {
     en: {
       eyebrow: "Portfolio",
-      role: "Sales Development Representative (SDR)",
-      pitch1: "Sales Development Representative turning inbound and outbound leads into qualified sales opportunities.",
+      role: "Sales Growth Lead (Setter & Closer)",
+      flagsCaption: "Trusted by clients from",
+      pitch1: "Sales Growth Lead turning inbound and outbound leads into qualified sales opportunities.",
       pitch2: "Trilingual — French, English, Arabic — built to work across borders.",
       flagCH: "Switzerland",
       flagFR: "France",
@@ -542,24 +563,18 @@
       skill6Name: "Client Messaging",
       skill6Desc: "Managing WhatsApp, DMs, and messages to keep response times fast.",
       experienceHead: "Experience",
-      nicheCH1: "[Niche 1]",
-      nicheCH2: "[Niche 2]",
-      nicheFR1: "[Niche 1]",
-      nicheFR2: "[Niche 2]",
-      nicheUS1: "[Niche 1]",
-      nicheUS2: "[Niche 2]",
-      nicheAE1: "[Niche]",
-      nicheDZ1: "[Niche]",
+      nicheCH1: "Cross-border support",
+      nicheFR1: "Sports coaching",
+      nicheFR2: "E-commerce (China sourcing)",
+      nicheUS1: "Real estate agency",
+      nicheUS2: "Credit repair",
+      nicheAE1: "Real estate agency",
+      nicheDZ1: "Sourcing agency (worldwide)",
       resultsHead: "Key Results",
       stat1Label: "Appointments Booked",
       stat2Label: "Conversion Rate",
       stat3Label: "Revenue Generated",
       todo: "to be filled in",
-      testimonialsHead: "Testimonials",
-      quote1: '"[Client testimonial to be filled in]"',
-      author1: "— [Name, Role]",
-      quote2: '"[Client testimonial to be filled in]"',
-      author2: "— [Name, Role]",
       contactHead: "Let's work together?",
       contactSub: "Message me — I reply quickly.",
       sendMsg: "Send a message →",
@@ -573,13 +588,14 @@
     },
     fr: {
       eyebrow: "Portfolio",
-      role: "Sales Development Representative (SDR)",
-      pitch1: "Sales Development Representative qui transforme les leads entrants et sortants en opportunités de vente qualifiées.",
-      pitch2: "Trilingue — français, anglais, arabe — pensé pour travailler à l'international.",
+      role: "Sales Growth Lead (Setter & Closer)",
+      flagsCaption: "Des clients qui m’ont fait confiance",
+      pitch1: "Sales Growth Lead qui transforme les leads entrants et sortants en opportunités de vente qualifiées.",
+      pitch2: "Trilingue — français, anglais, arabe — taillé pour travailler sans frontières.",
       flagCH: "Suisse",
       flagFR: "France",
       flagUS: "États-Unis",
-      flagAE: "Émirats Arabes Unis",
+      flagAE: "Émirats arabes unis",
       flagDZ: "Algérie",
       skillsHead: "Compétences",
       tagline: 'Transformer les <span>leads</span> en clients payants.',
@@ -596,24 +612,18 @@
       skill6Name: "Gestion des messages",
       skill6Desc: "Gérer WhatsApp, DM et messages pour garder un temps de réponse rapide.",
       experienceHead: "Expériences",
-      nicheCH1: "[Niche 1]",
-      nicheCH2: "[Niche 2]",
-      nicheFR1: "[Niche 1]",
-      nicheFR2: "[Niche 2]",
-      nicheUS1: "[Niche 1]",
-      nicheUS2: "[Niche 2]",
-      nicheAE1: "[Niche]",
-      nicheDZ1: "[Niche]",
+      nicheCH1: "Accompagnement frontalier",
+      nicheFR1: "Coach sportif",
+      nicheFR2: "E-commerce (sourcing Chine)",
+      nicheUS1: "Agent immobilier",
+      nicheUS2: "Credit repair",
+      nicheAE1: "Agent immobilier",
+      nicheDZ1: "Agence sourcing (envois mondiaux)",
       resultsHead: "Résultats chiffrés",
       stat1Label: "RDV pris",
       stat2Label: "Taux de conversion",
       stat3Label: "CA généré",
       todo: "à remplir",
-      testimonialsHead: "Témoignages",
-      quote1: '"[Témoignage client à remplir]"',
-      author1: "— [Nom, rôle]",
-      quote2: '"[Témoignage client à remplir]"',
-      author2: "— [Nom, rôle]",
       contactHead: "On travaille ensemble ?",
       contactSub: "Écris-moi, je réponds rapidement.",
       sendMsg: "Envoyer un message →",
