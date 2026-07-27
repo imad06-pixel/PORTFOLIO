@@ -260,6 +260,21 @@
   }
   .contact p{ color:var(--muted); font-size:13.5px; margin-bottom:20px; }
   .contact .dm-btn{ margin-bottom:0; }
+  .contact-alt{
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    margin-top:20px;
+  }
+  .contact-pill{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--surface); border:1px solid var(--line);
+    color:var(--navy); text-decoration:none;
+    font-size:13px; font-weight:600;
+    padding:9px 18px; border-radius:999px;
+    box-shadow:0 3px 10px -5px rgba(4,43,68,0.15);
+    transition:border-color .15s, transform .15s;
+  }
+  .contact-pill:hover{ border-color:var(--teal); transform:translateY(-1px); }
+  .contact-icon{ font-size:14px; }
 
   @media (max-width:560px){
     .skills-grid, .stats-grid{ grid-template-columns:1fr 1fr; }
@@ -489,6 +504,17 @@
         <a href="https://instagram.com/imad_irl" target="_blank" class="dm-btn">
           <span data-i18n="sendMsg">Send a message →</span>
         </a>
+        <div class="contact-alt">
+          <a href="https://wa.me/213796934600" target="_blank" class="contact-pill">
+            <span class="contact-icon">💬</span> WhatsApp — +213 796 934 600
+          </a>
+          <a href="https://wa.me/33753636260" target="_blank" class="contact-pill">
+            <span class="contact-icon">💬</span> WhatsApp — +33 753 636 260
+          </a>
+          <a href="mailto:keziz.imad06@gmail.com" class="contact-pill">
+            <span class="contact-icon">✉️</span> keziz.imad06@gmail.com
+          </a>
+        </div>
       </div>
     </div>
 
